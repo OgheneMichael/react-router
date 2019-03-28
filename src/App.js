@@ -1,22 +1,20 @@
 import React, { Component } from "react";
-import { saveUser } from "./api";
-import Form from "./Form";
 
-import { withRouter } from "react-router-dom";
+import queryString from "query-string";
 
-class Register extends Component {
-	handleSubmit = user => {
-		saveUser(user).then(() => this.props.history.push("/dashboard"));
-	};
+class Dashboard extends Component {
+	componentDidMount() {
+		console.log(this.props.location.search); // "?sorton=market-cap"
+		const values = queryString.parse(this.props.location.search);
+		console.log(values.sorton); // market-cap
+		this.fetchDashboardData(values.sorton);
+	}
+
+	fetchDashboardData(value) {}
 
 	render() {
-		return (
-			<div>
-				<h1>Register</h1>
-				<Form onSubmit={this.handleSubmit} />
-			</div>
-		);
+		return <h1>hd</h1>;
 	}
 }
 
-export default withRouter(Register);
+export default Dashboard;
