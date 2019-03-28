@@ -1,20 +1,56 @@
 import React, { Component } from "react";
 
-import queryString from "query-string";
+import {
+	BrowserRouter as Router,
+	Route,
+	Switch,
+	Redirect,
+	Link
+} from "react-router-dom";
 
-class Dashboard extends Component {
-	componentDidMount() {
-		console.log(this.props.location.search); // "?sorton=market-cap"
-		const values = queryString.parse(this.props.location.search);
-		console.log(values.sorton); // market-cap
-		this.fetchDashboardData(values.sorton);
-	}
+const Home = () => <h1>Home</h1>;
+const WillMatch = () => <h1>Matched!</h1>;
 
-	fetchDashboardData(value) {}
+const NoMatch = ({ location }) => (
+	<div>
+		<h3>
+			No match for <code>{location.pathname}</code>
+		</h3>
+	</div>
+);
 
+class App extends Component {
 	render() {
-		return <h1>hd</h1>;
+		return (
+			<Router>
+				<div>
+					<ul>
+						<li>
+							<Link to="/">Home</Link>
+						</li>
+						<li>
+							<Link to="/old-match">Old Match, to be redirected</Link>
+						</li>
+						<li>
+							<Link to="/will-match">Will Match</Link>
+						</li>
+						<li>
+							<Link to="/will-not-match">Will not Match</Link>
+						</li>
+						<li>
+							<Link to="/also/will/not/match">Also will not Match</Link>
+						</li>
+					</ul>
+					<Switch>
+						<Route path="/" exact component={Home} />
+						<Redirect from="/old-match" to="/will-match" />
+						<Route path="/will-match" component={WillMatch} />
+						<Route component={NoMatch} />
+					</Switch>
+				</div>
+			</Router>
+		);
 	}
 }
 
-export default Dashboard;
+export default App;
