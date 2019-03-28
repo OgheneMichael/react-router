@@ -1,48 +1,34 @@
 import React, { Component } from "react";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { saveUser } from "./api";
+import Form from "./Form";
 
-import Settings from './Settings';
-import Dashboard from './Dashboard';
-import {fetchSettings, fetchDashboard} from './api'
+import { Redirect } from "react-router-dom";
 
+class Register extends Component {
+	state = {
+		toDashboard: false
+	};
 
-const routes = [
-	{
-		path: '/settings',
-		component: Settings,
-		fetchInitialData: (id)=> fetchSettings(id)
-	},
-	{
-		path: '/dashboard',
-		component: Dashboard,
-		fetchInitialData: (id)=> fetchDashboard(id)
-	}
-]
+	handleSubmit = user => {
+		saveUser(user).then(() =>
+			this.setState(() => ({
+				toDashboard: true
+			}))
+		);
+	};
 
-class App extends Component {
 	render() {
+		if (this.state.toDashboard === true) {
+			return <Redirect to="/dashboard" />;
+		}
+
 		return (
-			<Router>
-				<div style={{ width: 1000, margin: "0 auto" }}>
-					<ul>
-						<li>
-							<Link to="/settings">Settings</Link>
-						</li>
-						<li>
-							<Link to="/dashboard">Dashboard</Link>
-						</li>
-					</ul>
-
-					<hr />
-
-					{routes.map(({path, component: C, fetchInitialData}) => (
-						<Route path={path} render={(props)=> <C {...props} fetchInitialData={fetchInitialData} />} />
-					))}
-					
-				</div>
-			</Router>
+			<div>
+				<h1>Register</h1>
+				<Form onSubmit={this.handleSubmit} />
+			</div>
 		);
 	}
 }
 
-export default App;
+export default Register;
