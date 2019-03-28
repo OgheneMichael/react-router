@@ -2,26 +2,14 @@ import React, { Component } from "react";
 import { saveUser } from "./api";
 import Form from "./Form";
 
-import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class Register extends Component {
-	state = {
-		toDashboard: false
-	};
-
 	handleSubmit = user => {
-		saveUser(user).then(() =>
-			this.setState(() => ({
-				toDashboard: true
-			}))
-		);
+		saveUser(user).then(() => this.props.history.push("/dashboard"));
 	};
 
 	render() {
-		if (this.state.toDashboard === true) {
-			return <Redirect to="/dashboard" />;
-		}
-
 		return (
 			<div>
 				<h1>Register</h1>
@@ -31,4 +19,4 @@ class Register extends Component {
 	}
 }
 
-export default Register;
+export default withRouter(Register);
