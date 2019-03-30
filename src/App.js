@@ -1,21 +1,12 @@
 import React, { Component } from "react";
 
-import {
-	BrowserRouter as Router,
-	Route,
-	Switch,
-	Redirect,
-	Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
-const Home = () => <h1>Home</h1>;
-const WillMatch = () => <h1>Matched!</h1>;
-
-const NoMatch = ({ location }) => (
+const About = () => <h1>About</h1>;
+const Company = () => <h1>Company</h1>;
+const User = ({ match }) => (
 	<div>
-		<h3>
-			No match for <code>{location.pathname}</code>
-		</h3>
+		<h2>User: {match.params.user}</h2>
 	</div>
 );
 
@@ -26,26 +17,22 @@ class App extends Component {
 				<div>
 					<ul>
 						<li>
-							<Link to="/">Home</Link>
+							<Link to="/about">About</Link>
 						</li>
 						<li>
-							<Link to="/old-match">Old Match, to be redirected</Link>
+							<Link to="/company">Company</Link>
 						</li>
 						<li>
-							<Link to="/will-match">Will Match</Link>
+							<Link to="/kim">Kim</Link>
 						</li>
 						<li>
-							<Link to="/will-not-match">Will not Match</Link>
-						</li>
-						<li>
-							<Link to="/also/will/not/match">Also will not Match</Link>
+							<Link to="/chris">Chris</Link>
 						</li>
 					</ul>
 					<Switch>
-						<Route path="/" exact component={Home} />
-						<Redirect from="/old-match" to="/will-match" />
-						<Route path="/will-match" component={WillMatch} />
-						<Route component={NoMatch} />
+						<Route path="/about" exact component={About} />
+						<Route path="/company" component={Company} />
+						<Route path="/:user" component={User} />
 					</Switch>
 				</div>
 			</Router>
